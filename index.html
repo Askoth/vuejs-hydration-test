@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="my-app">
+        testando hydrate
+
+        <button class="do-hydrate">Hydrate!!!</button>
+        <button class="do-new">New Vue!!!</button>
+
+        <div class="content">
+            <div class="hydrate"><button class="button">click!</button>
+                <span>0</span></div>
+        </div>
+
+
+        <div>
+            <h5>no vuejs console</h5>
+            <div class="counter-display"></div>
+        </div>
+
+    </div>
+
+
+    <script src="js/vue.js"></script>
+    <script>
+        Vue.config.devtools = true;
+
+        (function () {
+            const template = `
+            <div class="hydrate">
+                <button class="button">click!</button>
+                <span>{{counter}}</span>
+            </div>`;
+
+            window.data = {
+                counter: 0
+            };
+
+            document.querySelector('.button').addEventListener('click', () => {
+                window.data.counter = window.data.counter + 1;
+
+                const cd = document.querySelector('.counter-display');
+
+                cd.innerHTML += `${window.data.counter} `;
+
+            });
+
+            document.querySelector('.do-new').addEventListener('click', () => {
+                let vm = new Vue({
+                    data () {
+                        return window.data
+                    },
+                    template,
+                });
+
+                vm.$mount('.hydrate')
+            });
+
+            document.querySelector('.do-hydrate').addEventListener('click', () => {
+                let vm = new Vue({
+                    data () {
+                        return window.data
+                    },
+                    template
+                });
+
+                vm.$mount('.hydrate', true);
+            });
+
+
+        })();
+    </script>
+</body>
+</html>
